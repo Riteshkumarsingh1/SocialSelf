@@ -29,10 +29,6 @@ Built as a 3‑hour sprint for the **GoDaddy Buildathon**, SocialSelf demonstrat
 | **Deployment** | Render / GoDaddy Airo App Builder |
 | **Frontend** | HTML/CSS/JS with Jinja2 templates |
 
----
-
-Live App: https://socialself.onrender.com
-
-API Docs: https://socialself.onrender.com/docs
-
-GitHub: https://github.com/Riteshkumarsingh1/SocialSelf
+---## 🔗 Live Demo
+🚀 **Live URL:** [socialself-production.up.railway.app](https://socialself-production.up.railway.app)
+📚 **API Docs:** [socialself-production.up.railway.app/docs](https://socialself-production.up.railway.app/docs)
