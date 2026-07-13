@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialSelf - AI Communication Agent</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 20px;
+        }
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .main {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .right-sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h2, h3 { color: #333; margin-bottom: 15px; }
+        .tone-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tone-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background: #f0f0f0;
+            transition: all 0.3s;
+        }
+        .tone-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .call-panel {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .call-panel input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .call-panel button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .chat-window {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #fafafa;
+        }
+        .user-msg {
+            text-align: right;
+            margin: 10px 0;
+        }
+        .user-msg div {
+            background: #667eea;
+            color: white;
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+        }
+        .ai-msg {
+            text-align: left;
+            margin: 10px 0;
+        }
+        .ai-msg div {
+            background: #e9ecef;
+            color: #333;
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+        }
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .chat-input button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .status {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .conversation-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+        .conversation-item strong {
+            color: #667eea;
+        }
+        @media (max-width: 1000px) {
+            .dashboard { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: white; margin-bottom: 20px;">🤖 SocialSelf - AI Communication Agent</h1>
+        
+        <div class="dashboard">
+            <!-- Left Sidebar - Settings -->
+            <div class="sidebar">
+                <h3>🎭 AI Personality</h3>
+                <div class="tone-buttons" id="tone-buttons">
+                    <button class="tone-btn" data-tone="polite">🙏 Polite</button>
+                    <button class="tone-btn" data-tone="aggressive">⚡ Aggressive</button>
+                    <button class="tone-btn" data-tone="humble">🥺 Humble</button>
+                    <button class="tone-btn" data-tone="sentimental">❤️ Sentimental</button>
+                    <button class="tone-btn active" data-tone="friendly">😊 Friendly</button>
+                    <button class="tone-btn" data-tone="professional">💼 Professional</button>
+                    <button class="tone-btn" data-tone="sarcastic">😏 Sarcastic</button>
+                </div>
+                
+                <div class="call-panel">
+                    <h3>📞 Make a Call</h3>
+                    <input type="tel" id="phone-number" placeholder="+1 234 567 8900">
+                    <button id="make-call-btn">Start AI Call</button>
+                    <div id="call-status" class="status"></div>
+                </div>
+                
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+            
+            <!-- Main - Chat Interface -->
+            <div class="main">
+                <h2>💬 Chat with AI Assistant</h2>
+                <div id="chat-window" class="chat-window">
+                    <div class="ai-msg"><div>Hello! I'm your AI assistant. How can I help you today?</div></div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Type your message here...">
+                    <button id="send-chat-btn">Send</button>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar - Conversation History -->
+            <div class="right-sidebar">
+                <h3>📜 Recent Conversations</h3>
+                <div id="conversation-history">
+                    <div class="conversation-item">No conversations yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentTone = 'friendly';
+        
+        // Load user data on page load
+        async function loadUser() {
+            try {
+                const response = await fetch('/api/user');
+                if (response.ok) {
+                    currentUser = await response.json();
+                    document.querySelector('.sidebar h3').innerHTML = `Welcome, ${currentUser.name} 🎭`;
+                    loadChatHistory();
+                } else {
+                    window.location.href = '/login';
+                }
+            } catch (e) {
+                window.location.href = '/login';
+            }
+        }
+        
+        // Set tone
+        async function setTone(tone) {
+            currentTone = tone;
+            // Update UI
+            document.querySelectorAll('.tone-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tone === tone) btn.classList.add('active');
+            });
+            // Call backend
+            await fetch('/api/set-tone', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `tone=${tone}`
+            });
+        }
+        
+        // Send chat message
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessageToChat(message, 'user');
+            input.value = '';
+            
+            // Send to backend
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            
+            // Add AI response to chat
+            addMessageToChat(data.reply, 'ai');
+            
+            // Refresh conversation history
+            loadChatHistory();
+        }
+        
+        function addMessageToChat(text, sender) {
+            const chatWindow = document.getElementById('chat-window');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = sender === 'user' ? 'user-msg' : 'ai-msg';
+            msgDiv.innerHTML = `<div>${escapeHtml(text)}</div>`;
+            chatWindow.appendChild(msgDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+        
+        // Make phone call
+        async function makeCall() {
+            const phoneNumber = document.getElementById('phone-number').value;
+            if (!phoneNumber) {
+                document.getElementById('call-status').innerHTML = 'Please enter a phone number';
+                return;
+            }
+            
+            document.getElementById('call-status').innerHTML = '📞 Calling...';
+            
+            const response = await fetch('/api/make-call', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `phone_number=${encodeURIComponent(phoneNumber)}`
+            });
+            const data = await response.json();
+            
+            if (data.status === 'calling') {
+                document.getElementById('call-status').innerHTML = `✅ Call initiated! Call SID: ${data.call_sid}`;
+            } else {
+                document.getElementById('call-status').innerHTML = '❌ Call failed. Please try again.';
+            }
+        }
+        
+        // Load chat history
+        async function loadChatHistory() {
+            const response = await fetch('/api/chat/history');
+            if (response.ok) {
+                const history = await response.json();
+                const historyDiv = document.getElementById('conversation-history');
+                if (history.length === 0) {
+                    historyDiv.innerHTML = '<div class="conversation-item">No conversations yet</div>';
+                } else {
+                    historyDiv.innerHTML = history.map(item => `
+                        <div class="conversation-item">
+                            <strong>You:</strong> ${escapeHtml(item.message)}<br>
+                            <strong>AI:</strong> ${escapeHtml(item.reply)}<br>
+                            <small>Tone: ${item.tone} | ${new Date(item.timestamp).toLocaleTimeString()}</small>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+        
+        // Logout
+        async function logout() {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Event listeners
+        document.getElementById('send-chat-btn').addEventListener('click', sendChatMessage);
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendChatMessage();
+        });
+        document.getElementById('make-call-btn').addEventListener('click', makeCall);
+        document.getElementById('logout-btn').addEventListener('click', logout);
+        
+        document.querySelectorAll('.tone-btn').forEach(btn => {
+            btn.addEventListener('click', () => setTone(btn.dataset.tone));
+        });
+        
+        // Initialize
+        loadUser();
+    </script>
+</body>
+</html>

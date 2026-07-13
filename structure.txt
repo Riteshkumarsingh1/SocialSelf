@@ -1,0 +1,21 @@
+socialself/
+├── app/
+│   ├── __init__.py
+│   ├── main.py              # FastAPI application
+│   ├── database.py          # PostgreSQL database connection (Airo's built-in)
+│   ├── auth.py              # User registration & login
+│   ├── ai_agent.py          # Groq API integration with tone control
+│   ├── twilio_voice.py      # Voice call handling
+│   ├── whatsapp.py          # WhatsApp auto-reply
+│   ├── instagram.py         # Instagram DM auto-reply
+│   ├── telegram.py          # Telegram bot
+│   ├── twitter.py           # Twitter/X DM auto-reply
+│   ├── linkedin.py          # LinkedIn message auto-reply
+│   ├── chat.py              # Chatbot endpoint
+│   ├── templates/
+│   │   └── dashboard.html   # Frontend dashboard
+│   └── static/
+│       └── style.css        # Styling
+├── requirements.txt
+├── .env
+└── run.py
