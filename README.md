@@ -31,4 +31,8 @@ Built as a 3‑hour sprint for the **GoDaddy Buildathon**, SocialSelf demonstrat
 
 ---
 
-## 🏗️ Project Structure
+Live App: https://socialself.onrender.com
+
+API Docs: https://socialself.onrender.com/docs
+
+GitHub: https://github.com/Riteshkumarsingh1/SocialSelf
