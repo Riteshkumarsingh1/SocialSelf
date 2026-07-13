@@ -30,5 +30,4 @@ Built as a 3‑hour sprint for the **GoDaddy Buildathon**, SocialSelf demonstrat
 | **Frontend** | HTML/CSS/JS with Jinja2 templates |
 
 ---## 🔗 Live Demo
-🚀 **Live URL:** [socialself-production.up.railway.app](https://socialself-production.up.railway.app)
-📚 **API Docs:** [socialself-production.up.railway.app/docs](https://socialself-production.up.railway.app/docs)
+🚀 **Live URL:** https://socialself-2.onrender.com
